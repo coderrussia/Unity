@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Root check
 if [ "$EUID" -ne 0 ]; then
@@ -49,4 +49,17 @@ else
 
   echo "User $NEW_USER created and added to sudo group."
   echo "System is ready."
+
+  # Autologin
+  mkdir -p /etc/systemd/system/getty@tty1.service.d/
+  cat > /etc/systemd/system/getty@tty1.service.d/override.conf <<EOF
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty --noclear --autologin $NEW_USER %I \$TERM
+EOF
+
+  # services reboot
+  systemctl daemon-reload
+
+  echo "Autologin setup completed"
 fi
