@@ -8,9 +8,6 @@ fi
 
 echo
 
-# Username request
-read -p "Enter new user name: " NEW_USER
-
 # Update and upgrade system
 apt-get update
 apt-get upgrade -y
@@ -20,6 +17,9 @@ apt-get install -y ranger
 
 # Installing sudo if not already installed
 apt-get install -y sudo
+
+# Username request
+read -p "Enter new user name: " NEW_USER
 
 # Check if user exists
 if id "$NEW_USER" &>/dev/null; then
