@@ -8,8 +8,8 @@ fi
 
 echo
 
-# Get new user name from hostname (you can change this if needed)
-NEW_USER=$(hostname)
+# Username request
+read -p "Enter new user name: " NEW_USER
 
 # Update and upgrade system
 apt-get update
@@ -51,15 +51,15 @@ else
   echo "System is ready."
 
   # Autologin
-  mkdir -p /etc/systemd/system/getty@tty1.service.d/
-  cat > /etc/systemd/system/getty@tty1.service.d/override.conf <<EOF
-[Service]
-ExecStart=
-ExecStart=-/sbin/agetty --noclear --autologin $NEW_USER %I \$TERM
-EOF
+  #mkdir -p /etc/systemd/system/getty@tty1.service.d/
+  #cat > /etc/systemd/system/getty@tty1.service.d/override.conf <<EOF
+  #[Service]
+  #ExecStart=
+  #ExecStart=-/sbin/agetty --noclear --autologin $NEW_USER %I \$TERM
+  #EOF
 
   # services reboot
-  systemctl daemon-reload
+  #systemctl daemon-reload
 
-  echo "Autologin setup completed"
+  #echo "Autologin setup completed"
 fi
