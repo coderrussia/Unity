@@ -49,6 +49,9 @@ else
 
   echo "User $NEW_USER created and added to sudo group."
   echo "System is ready."
+ 
+ #cleaning
+ rm -r Unity
 
   # Autologin
   #mkdir -p /etc/systemd/system/getty@tty1.service.d/
