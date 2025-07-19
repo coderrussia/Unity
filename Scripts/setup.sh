@@ -47,6 +47,9 @@ else
   echo "none"
 fi)
 
+#clar terminal
+clear
+
 #info
 cat << "EOF"
 
@@ -60,30 +63,6 @@ cat << "EOF"
                                                  |_|    
 
 EOF
-
-echo "Distro: $distro"
-
-echo "Kernel: $Kernel"
-
-echo "hardware: $hardware"
-
-echo "ntp: $ntp"
-
-#Script confirmation 
-read -p "Are you want to continue ? [y/N]: " answer
-
-case "$answer" in
-  [Yy]* )
-    ;;  # При вводе 'y' или 'Y' (и любая строка, начинающаяся с y/Y) ничего не делаем, продолжаем
-  [Nn]* )  # <-- добавлен закрывающий скобка )
-    echo "script canceled"
-    exit 1
-    ;;
-  * )
-    echo "[Y/N]"
-    exit 1
-    ;;
-esac
 
 #Answer questions
 #New user
@@ -108,6 +87,35 @@ read -p "Enter new user name: " NEW_USER
 #Wazuh
 read -p "Enter Wazuh-server adress: " Wazuh_srv_adr
 
+
+echo "Distro: $distro"
+
+echo "Kernel: $Kernel"
+
+echo "hardware: $hardware"
+
+echo "ntp: $ntp"
+
+echo "Wazuh-server adress: $Wazuh_srv_adr"
+
+echo "Username for new user: $NEW_USER"
+#Script confirmation 
+read -p "Are you want to continue ? [y/N]: " answer
+
+case "$answer" in
+  [Yy]* )
+    ;;  
+  [Nn]* )  
+    echo "script canceled"
+    exit 1
+    ;;
+  * )
+    echo "[Y/N]"
+    exit 1
+    ;;
+esac
+
+
 # Update and upgrade system
 apt-get update
 apt-get upgrade -y
@@ -119,12 +127,13 @@ apt-get install sudo -y
 apt-get install curl -y
 apt-get install git -y
 apt-get install wget -y
-
+apt-get install gnupg2 -y
 
 #wazuh
 #adding repositories
 curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | gpg --no-default-keyring --keyring gnupg-ring:/usr/share/keyrings/wazuh.gpg --import && chmod 644 /usr/share/keyrings/wazuh.gpg
 echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" | tee -a /etc/apt/sources.list.d/wazuh.list
+
 apt-get update
 
 #installing wazuh-agent
@@ -143,4 +152,4 @@ else
 
   # Add user to sudo group
   usermod -aG sudo "$NEW_USER"
-fi
+fi 
